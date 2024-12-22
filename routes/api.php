@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/test', function () {
     return response()->json(['message'=>' API is working']);
 });
+// Route::post('checkDeposit', [TransactionController::class, 'checkDeposit'])->name('checkDeposit');
+
+
+Route::get('/fetch-transactions', [TransactionController::class, 'fetchAndStoreTransactions']);
