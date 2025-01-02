@@ -32,6 +32,7 @@ class UserController extends Controller
 
         $postUserHidden = Post::where('id_user', $userId)->where('status', 1)->orderBy('created_at', 'desc')->get();
         $postUser = Post::where('id_user', $userId)->where('status', 2)->orderBy('created_at', 'desc')->get();
+        $totalPostUser = Post::where('id_user', $userId)->where('status', 2)->orderBy('created_at', 'desc')->count();
         $listShopUser = Shop::where('id_user', $userId)->where('status', 2)->get();
         $totalShops = Shop::where('id_user', $userId)->where('status', 2)->count();
         
@@ -42,6 +43,7 @@ class UserController extends Controller
             'totalShops' => $totalShops,
             'postUser' => $postUser,
             'postUserHidden' => $postUserHidden,
+            'totalPostUser' => $totalPostUser,
         ]);
     }
 
@@ -68,4 +70,5 @@ class UserController extends Controller
         // Nếu user không tồn tại
         return redirect()->back()->with('error', 'Không tìm thấy người dùng.');
     }
+    
 }

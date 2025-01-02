@@ -176,10 +176,10 @@
                                 <li><a class="dropdown-item" href="{{ route('logout') }}"> Đăng Xuất <span
                                             class="ms-1"><i class="icofont-logout"></i></span></a></li>
                             </ul>
-                        </div>
+                        </div> 
                     </div>
                     <div class="wallet-btn">
-                        <a href="{{ route('wallet', Auth::user()->username) }}"><span><i class="icofont-wallet"
+                        <a href="{{ route('wallet') }}"><span><i class="icofont-wallet"
                                     data-blast="color"></i></span>
                             <span class="d-none d-md-inline">
                                 {{-- {{ Auth::user()->fullname }}VNĐ --}}
@@ -187,18 +187,32 @@
                                 {{-- 100000000000VNĐ --}}
                             </span> </a>
                     </div>
-                    <div class="wallet-btn">
-                        <a href="{{ route('messengerAll')}}"><span><i class="icofont-chat"
-                                    data-blast="color"></i></span>
-                            <span class="d-none d-md-inline">
 
+                    {{-- <div class="wallet-btn">
+                        <a href="{{ route('messenger') }}"><span><i class="icofont-chat" data-blast="color"></i></span>
+                            <span class="d-none d-md-inline"> 
                             </span> </a>
+                    </div>  --}}
+                    <div class="wallet-btn">
+                        <a href="{{ route('messenger') }}" class="position-relative">
+                            <span>
+                                <i class="icofont-chat" data-blast="color"></i>
+                            </span>
+                            @if ($unreadMessagesCount > 0)
+                                <span class="badge badge-pill badge-primary position-absolute"
+                                      style="top: -5px; right: -10px; background-color: #007bff; color: white; font-size: 12px;">
+                                    {{ $unreadMessagesCount }}
+                                </span>
+                            @endif
+                            <span class="d-none d-md-inline"></span>
+                        </a>
                     </div>
+                    
                 @endguest
                 {{-- <div class="wallet-btn">
                     <a href="wallet.html"><span><i class="icofont-wallet" data-blast="color"></i></span> <span
                             class="d-none d-md-inline">0VND</span> </a>
-                </div> --}} 
+                </div> --}}
             </div>
 
             <button class="menu-trigger header__btn" id="menu05">
@@ -208,5 +222,4 @@
             </button>
         </div>
     </div>
-</header> 
-
+</header>

@@ -41,7 +41,7 @@
                             <div class="banner-btns d-flex flex-wrap">
                                 <a data-blast="bgColor" href="explore.html" class="default-btn move-top"><span>Mua
                                         Ngay</span> </a>
-                                <a href="#!" class="default-btn move-right"><span>Đăng Kí Bán Hàng</span> </a>
+                                <a href="{{route('registerShop')}}" class="default-btn move-right"><span>Đăng Kí Bán Hàng</span> </a>
                             </div>
                         </div>
                     </div>

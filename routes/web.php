@@ -11,6 +11,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\client\MessengerController;
 use App\Http\Controllers\client\PostClientController;
 use App\Http\Controllers\client\UserController;
+use App\Http\Controllers\ManagerShops\ManagerShopController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\walletCotroller;
 use App\Models\Categories;
@@ -178,9 +179,7 @@ Route::get('resetPasswordForm', [AuthController::class, 'resetPasswordForm'])->n
 
 Route::middleware(['auth'])->group(function () {
     Route::post('updateProfile', [UserController::class, 'updateProfile'])->name('updateProfile');
-    Route::get('wallet/{username}', [walletCotroller::class, 'wallet'])->name('wallet');
-
-
+    Route::get('wallet', [walletCotroller::class, 'wallet'])->name('wallet');
 
     // Route::get('detailPostUser/{username}', [UserController::class, 'detailUser'])->name('detailUser');
 
@@ -193,22 +192,29 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('Comment_donate_post', [PostClientController::class, 'Comment_donate_post'])->name('Comment_donate_post');
 
-    // Route::get('messenger', [MessengerController::class, 'messenger'])->name('messenger');
-});
-Route::middleware('auth')->group(function () {
-    // Route::get('messengerAll', [ChatController::class, 'messengerAll'])->name('messengerAll');
-    // Route::get('messenger/{user_id}', [ChatController::class, 'messenger'])->name('messenger');
-    // Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
-    // Route::get('/chat/fetch/{user_id}', [ChatController::class, 'fetchMessages'])->name('chat.fetch');
+    
 
 
+
+
+
+
+    Route::get('registerShop', [ManagerShopController::class, 'showRegisterShop'])->name('registerShop');
+    Route::post('registerShop', [ManagerShopController::class, 'registerShop'])->name('registerShop'); 
+
+    Route::prefix('shop')->as('shop.')->group(function () {
+        Route::get('index', [ManagerShopController::class, 'showShop'])->name('index');
+    });
+    
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('messengerAll', [ChatController::class, 'messengerAll'])->name('messengerAll');
-    Route::get('/messages/{userId}', [ChatController::class, 'fetchMessages'])->name('messages.fetch');
-    Route::post('/messages/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+Route::middleware(['auth'])->group(function () {
+    Route::get('messenger', [ChatController::class, 'messengerAll'])->name('messenger');
+    Route::get('messages/{username}', [ChatController::class, 'fetchMessages'])->name('messages');
+    Route::post('/send-message', [ChatController::class, 'send'])->name('send-message');
+    Route::post('/upload-image', [ChatController::class, 'uploadImage'])->name('upload-image');
 });
+
 
 Route::get('detailUser/{username}', [UserController::class, 'detailUser'])->name('detailUser');
 

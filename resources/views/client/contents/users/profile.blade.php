@@ -35,24 +35,27 @@
                         </div>
                         <div class="profile-information">
                             <div class="profile-pic">
-                                @if (Auth::user()->image == null)
+                                @if ($user->image == null)
                                     <img src="{{ asset('assetsClient/images/profile/Profile.jpg') }}" alt="DP">
                                 @else
                                     <img src="{{ asset($user->image) }}" alt="DP">
                                 @endif
-                                <div class="custom-upload">
-                                    <div class="file-btn">
-                                        <span class="d-none d-lg-inline-block"> <i class="icofont-camera"></i>
-                                            Edit</span>
-                                        <span class="d-lg-none mr-0"><i class="icofont-plus"></i></span>
+
+                                @if ($user->id === Auth::id())
+                                    <div class="custom-upload">
+                                        <div class="file-btn">
+                                            <span class="d-none d-lg-inline-block"> <i class="icofont-camera"></i>
+                                                Edit</span>
+                                            <span class="d-lg-none mr-0"><i class="icofont-plus"></i></span>
+                                        </div>
+                                        <input type="file">
                                     </div>
-                                    <input type="file">
-                                </div>
+                                @endif
                             </div>
                             <div class="profile-name">
-                                <h4>{{ Auth::user()->fullname }}</h4>
+                                <h4>{{ $user->fullname }}</h4>
                                 <h4><img width="24" height="24" src="https://img.icons8.com/fluency/48/email.png"
-                                        alt="email" />{{ Auth::user()->username }}</h4>
+                                        alt="email" />{{ $user->username }}</h4>
                             </div>
                             <ul class="profile-contact">
                                 {{-- <li class="crypto-copy">
@@ -87,15 +90,15 @@
                                 </li> --}}
                                 @if ($user->id !== Auth::id())
                                     <li>
-                                        <a href="{{ route('messenger', ['user_id' => $user->id]) }}">
+                                        <a href="{{ route('messages', $user->username) }}">
                                             <div class="icon"><i class="icofont-speech-comments"></i></div>
                                             <div class="text">
-                                                <p>Send Message</p>
+                                                <p>Gửi tin nhắn</p>
                                             </div>
                                         </a>
                                     </li>
-                                @endif 
-                            </ul> 
+                                @endif
+                            </ul>
                         </div>
                     </div>
                     <div class="profile-details">
@@ -129,10 +132,11 @@
                                         <li><a class="dropdown-item" href="#">Block user</a></li>
                                     </ul> 
                                 </div> --}}
-                                <button class="nav-link" id="nav-follower-tab" data-bs-toggle="tab"
-                                    data-bs-target="#follower" type="button" role="tab" aria-controls="follower"
-                                    aria-selected="false">Sửa Thông Tin</button>
-
+                                @if ($user->id === Auth::id())
+                                    <button class="nav-link" id="nav-follower-tab" data-bs-toggle="tab"
+                                        data-bs-target="#follower" type="button" role="tab" aria-controls="follower"
+                                        aria-selected="false">Sửa Thông Tin</button>
+                                @endif
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
@@ -179,7 +183,7 @@
                                                                         alt="name" />
                                                                     Họ Tên
                                                                 </p>
-                                                                <p class="info-details">{{ Auth::user()->fullname }}</p>
+                                                                <p class="info-details">{{ $user->fullname }}</p>
                                                             </li>
                                                             <li>
                                                                 <p class="info-name">
@@ -191,20 +195,22 @@
                                                                 <p class="info-details">
                                                                     <img width="24" height="24"
                                                                         src="https://img.icons8.com/fluency/48/email.png"
-                                                                        alt="email" />{{ Auth::user()->username }}
+                                                                        alt="email" />{{ $user->username }}
                                                                 </p>
                                                             </li>
-                                                            <li>
-                                                                <p class="info-name">
-                                                                    <img width="24" height="24"
-                                                                        src="https://img.icons8.com/flat-round/50/cheap-2--v1.png"
-                                                                        alt="cheap-2--v1" />
-                                                                    Số Dư
-                                                                </p>
-                                                                <p class="info-details">
-                                                                    {{ number_format(Auth::user()->wallet ? Auth::user()->wallet->cash : 0, 0, ',', '.') }}
-                                                                    VNĐ</p>
-                                                            </li>
+                                                            @if ($user->id === Auth::id())
+                                                                <li>
+                                                                    <p class="info-name">
+                                                                        <img width="24" height="24"
+                                                                            src="https://img.icons8.com/flat-round/50/cheap-2--v1.png"
+                                                                            alt="cheap-2--v1" />
+                                                                        Số Dư
+                                                                    </p>
+                                                                    <p class="info-details">
+                                                                        {{ number_format(Auth::user()->wallet ? Auth::user()->wallet->cash : 0, 0, ',', '.') }}
+                                                                        VNĐ</p>
+                                                                </li>
+                                                            @endif
                                                             <li>
                                                                 <p class="info-name">
                                                                     <img width="24" height="24"
@@ -222,7 +228,7 @@
                                                                     Bài Viết
                                                                 </p>
                                                                 <p class="info-details">
-                                                                    00
+                                                                    {{ $totalPostUser }}
                                                                 </p>
 
                                                             </li>
@@ -234,7 +240,7 @@
                                                                     Ngày Tạo
                                                                 </p>
                                                                 <p class="info-details">
-                                                                    {{ \Carbon\Carbon::parse(Auth::user()->created_at)->format('d/m/Y') }}
+                                                                    {{ \Carbon\Carbon::parse($user->created_at)->format('d/m/Y') }}
                                                                 </p>
 
                                                             </li>
@@ -349,13 +355,14 @@
                                             <div class="wallet-wrapper">
                                                 <div class="wallet-title">
                                                     <h4>Bài Viết</h4>
-                                                    <p>Tất Cả Bài Viết Của {{ Auth::user()->fullname }} ở đây.
+                                                    <p>Tất Cả Bài Viết Của {{ $user->username }} ở đây.
                                                         <a href="{{ route('showAddPost') }}">Tạo Bài Viết Của Bạn Ngay</a>
                                                     </p>
                                                 </div>
                                                 <div class="wallet-section">
                                                     <div class="wallet-inner">
                                                         <div class="row g-3">
+                                                            @if ($user->id === Auth::id()) 
                                                             @foreach ($postUserHidden as $item)
                                                                 <div class="col-lg-4 col-sm-6">
                                                                     <div class="nft-item blog-item">
@@ -387,31 +394,35 @@
                                                                                         </p>
                                                                                         <p><span><i
                                                                                                     class="icofont-eye"></i></span>{{ $item->view }}
-                                                                                        </p>
-                                                                                        <div
-                                                                                            class="status-container d-flex justify-content-center align-items-center">
-                                                                                            @if ($item->status == 1)
+                                                                                        </p> 
+                                                                                            <div
+                                                                                                class="status-container d-flex justify-content-center align-items-center">
+                                                                                                @if ($item->status == 1)
+                                                                                                    <p class="m-0">
+                                                                                                        <span
+                                                                                                            class="badge rounded text-warning bg-warning-subtle p-2">Chưa
+                                                                                                            Duyệt</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    <p class="m-0">
+                                                                                                        <span
+                                                                                                            class="badge rounded text-success bg-success-subtle p-2">Đã
+                                                                                                            Duyệt</span>
+                                                                                                    </p>
+                                                                                                @endif
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="status-container d-flex justify-content-center align-items-center">
                                                                                                 <p class="m-0">
-                                                                                                    <span
-                                                                                                        class="badge rounded text-warning bg-warning-subtle p-2">Chưa
-                                                                                                        Duyệt</span>
+                                                                                                    <a
+                                                                                                        href="{{ route('showEditPost', ['slug' => $item->slug]) }}">
+                                                                                                        <span
+                                                                                                            class="badge rounded text-primary bg-primary-subtle p-2">Sửa
+                                                                                                            Bài
+                                                                                                            Viết</span>
+                                                                                                    </a>
                                                                                                 </p>
-                                                                                            @else
-                                                                                                <p class="m-0">
-                                                                                                    <span
-                                                                                                        class="badge rounded text-success bg-success-subtle p-2">Đã
-                                                                                                        Duyệt</span>
-                                                                                                </p>
-                                                                                            @endif
-                                                                                        </div>
-                                                                                        <p class="m-0">
-                                                                                            <a class="btn btn-primary"
-                                                                                                style="border-radius: 8px;padding: 4px;gap: 2px;"
-                                                                                                href="{{ route('showEditPost', ['slug' => $item->slug]) }}">Sửa
-                                                                                                Bài
-                                                                                                Viết</a>
-                                                                                        </p>
-
+                                                                                            </div> 
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -419,6 +430,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endforeach
+                                                            @endif 
                                                             @foreach ($postUser as $item)
                                                                 <div class="col-lg-4 col-sm-6">
                                                                     <div class="nft-item blog-item">
@@ -451,6 +463,7 @@
                                                                                         <p><span><i
                                                                                                     class="icofont-eye"></i></span>{{ $item->view }}
                                                                                         </p>
+                                                                                        @if ($user->id === Auth::id()) 
                                                                                         <div
                                                                                             class="status-container d-flex justify-content-center align-items-center">
                                                                                             @if ($item->status == 1)
@@ -467,6 +480,7 @@
                                                                                                 </p>
                                                                                             @endif
                                                                                         </div>
+                                                                                        @endif 
 
                                                                                     </div>
                                                                                 </div>

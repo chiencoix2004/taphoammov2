@@ -146,66 +146,8 @@ class PostClientController extends Controller
         return view('client.contents.posts.addPost', compact('categories'));
     }
 
-    // public function addPost(Request $request)
-    // {
-
-    //     $user = Auth::user(); // Lấy người dùng đang đăng nhập
-    //     $username = $user->username;
-    //     // Validate dữ liệu form
-    //     $request->validate([
-    //         'title' => 'required|string|max:100',
-    //         'content' => 'required|string',
-    //         'category' => 'required|string|max:255',
-    //         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Upload ảnh
-    //     ], [
-    //         'title.required' => 'Tiêu đề không được để trống.',
-    //         'content.required' => 'Nội dung không được để trống.',
-    //         'category.required' => 'Danh mục không được để trống.',
-    //         'image.required' => 'Ảnh không được để trống.',
-    //         'image.image' => 'File tải lên phải là hình ảnh.',
-    //         'image.max' => 'Kích thước hình ảnh không được quá 2MB.',
-    //     ]);
-
-    //     // Xử lý ảnh nếu có
-    //     // $imagePath = null;
-    //     // if ($request->hasFile('image')) {
-    //     //     $image = $request->file('image');
-    //     //     $imageName = time() . '_' . $image->getClientOriginalName();
-    //     //     $imagePath = $image->storeAs('uploads/images', $imageName, 'public');
-    //     // } 
-
-    //     $imagePath = '';
-    //     if ($request->hasFile('image')) {
-    //         $image = $request->file('image');
-    //         $nameImage = time() . "." . $image->getClientOriginalExtension();
-    //         $link = "images/";
-    //         $image->move(public_path($link), $nameImage);
-    //         $imagePath = $link . $nameImage;
-    //     }
-
-
-    //     // Tạo bài viết mới
-    //     Post::create([
-    //         'title' => $request->title,
-    //         // 'slug' => Str::slug($request->title, '-'), // Tạo slug tự động
-    //         'slug' => Str::slug($request->title, '-') . '-' . mt_rand(1000, 9999),
-    //         'content' => $request->content,
-    //         'id_user' => auth()->id(), // Lấy ID người dùng đăng nhập
-    //         'status' => $request->status ?? 1, // Mặc định là 1 (chưa duyệt)
-    //         'view' => 0, // Lượt xem mặc định là 0
-    //         'image' => $imagePath, // Đường dẫn ảnh
-    //         'category' => $request->category,
-    //     ]);
-
-    //     return redirect()->route('detailUser', ['username' => $username])
-    //              ->with('success', 'Bài viết đã được thêm thành công.');
-
-    // }
-
-
     public function showEditPost($slug)
-    {
-        // Truy vấn danh mục cha, con, và cháu đang hoạt động
+    { // Truy vấn danh mục cha, con, và cháu đang hoạt động
         $categories = Categories::whereNull('parent_id')
             ->where('status', 1)
             ->with([
@@ -216,8 +158,15 @@ class PostClientController extends Controller
                         });
                 }
             ])->get();
+
         // Tìm bài viết theo slug
         $post = Post::where('slug', $slug)->first();
+
+        // Kiểm tra nếu bài viết không tồn tại hoặc không phải của người dùng hiện tại
+        if (!$post || $post->id_user !== Auth::user()->id) {
+            return view('404', compact('categories', 'post'));
+        }
+
         return view('client.contents.posts.editPost', compact('categories', 'post'));
     }
 
@@ -288,7 +237,7 @@ class PostClientController extends Controller
         return redirect()->route('detailUser', ['username' => $username])
             ->with('success', 'Bài viết đã được thêm thành công.');
     }
- 
+
     public function updatePost(Request $request, $slug)
     {
         $user = Auth::user(); // Lấy người dùng đang đăng nhập

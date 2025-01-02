@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class walletCotroller extends Controller
 {
-    public function wallet($username)
+    public function wallet()
     {
         $categories = Categories::whereNull('parent_id')
             ->where('status', 1) // Chỉ lấy danh mục cha đang hoạt động
@@ -24,12 +24,12 @@ class walletCotroller extends Controller
                 }
             ])->get();
             $listBank = Bank::where('status', 1)->get();   
-            $user = User::where('username', $username)->first();
+            // $user = User::where('username', $username)->first();
         // return view('client.contents.wallets.cash')->with(['categories' => $categories])->with(['listBank' => $listBank]);
         return view('client.contents.wallets.cash')->with([
             'categories' => $categories,
             'listBank' => $listBank,
-            'user' => $user,
+            // 'user' => $user,
         ]);
     }
  

@@ -67,9 +67,9 @@
                                         <li class="crypto-copy" style="color: aqua">
                                             Nội Dung:
                                             <a href="javascript:void(0);"
-                                                onclick="copyText('{{ $user->username . ' ' . $user->id }}')"
+                                                onclick="copyText('{{ Auth::user()->username . ' ' . Auth::user()->id }}')"
                                                 style="cursor: pointer; color:rgb(243, 240, 53)">
-                                                {{ $user->username }} {{ $user->id }}
+                                                {{ Auth::user()->username }} {{ Auth::user()->id }}
                                             </a>
                                         </li>
 
@@ -78,118 +78,13 @@
                                         </div>
                                         <br>
                                         <span style="color: red">Hoặc quét mã Qrcode</span>
-                                        <p> <img src="https://img.vietqr.io/image/{{ $item->bank_name }}-{{ $item->account_number }}-compact.png?addInfo={{ $user->username }}%20{{ $user->id }}"
+                                        <p> <img src="https://img.vietqr.io/image/{{ $item->bank_name }}-{{ $item->account_number }}-compact.png?addInfo={{Auth::user()->username}}%20{{Auth::user()->id}}"
                                                 width="300px" height="300px"></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endforeach
-                    {{-- <div class="col-lg-4 col-md-6">
-                        <div class="wallet-item">
-                            <div class="wallet-item-inner">
-                                <div class="wallet-thumb">
-                                    <a href="signin.html">
-                                        <img src="{{ asset('assets2/images/wallet/07.png') }}" alt="wallet-img">
-                                    </a>
-                                </div>
-                                <div class="wallet-content">
-                                    <h5><a href="signin.html">Binance</a></h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="wallet-item">
-                            <div class="wallet-item-inner">
-                                <div class="wallet-thumb">
-                                    <a href="signin.html">
-                                        <img src="{{ asset('assets2/images/wallet/08.png') }}" alt="wallet-img">
-                                    </a>
-                                </div>
-                                <div class="wallet-content">
-                                    <h5><a href="signin.html">Formatic</a></h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="wallet-item">
-                            <div class="wallet-item-inner">
-                                <div class="wallet-thumb">
-                                    <a href="signin.html">
-                                        <img src="{{ asset('assets2/images/wallet/01.png') }}" alt="wallet-img">
-                                    </a>
-                                </div>
-                                <div class="wallet-content">
-                                    <h5><a href="signin.html">Autherum</a></h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="wallet-item">
-                            <div class="wallet-item-inner">
-                                <div class="wallet-thumb">
-                                    <a href="signin.html">
-                                        <img src="{{ asset('assets2/images/wallet/02.png') }}" alt="wallet-img">
-                                    </a>
-                                </div>
-                                <div class="wallet-content">
-                                    <h5><a href="signin.html">Bitski</a></h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="wallet-item">
-                            <div class="wallet-item-inner">
-                                <div class="wallet-thumb">
-                                    <a href="signin.html">
-                                        <img src="{{ asset('assets2/images/wallet/03.png') }}" alt="wallet-img">
-                                    </a>
-                                </div>
-                                <div class="wallet-content">
-                                    <h5><a href="signin.html">Coinbase</a></h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="wallet-item">
-                            <div class="wallet-item-inner">
-                                <div class="wallet-thumb">
-                                    <a href="signin.html">
-                                        <img src="{{ asset('assets2/images/wallet/04.png') }}" alt="wallet-img">
-                                    </a>
-                                </div>
-                                <div class="wallet-content">
-                                    <h5><a href="signin.html">Dapper</a></h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="wallet-item">
-                            <div class="wallet-item-inner">
-                                <div class="wallet-thumb">
-                                    <a href="signin.html">
-                                        <img src="{{ asset('assets2/images/wallet/05.png') }}" alt="wallet-img">
-                                    </a>
-                                </div>
-                                <div class="wallet-content">
-                                    <h5><a href="signin.html">Portis</a></h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
                 <br>
                 <hr>
